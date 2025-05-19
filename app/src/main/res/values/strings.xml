@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">tusservi</string>
+    <string name="title_home">Home</string>
+    <string name="title_chat">Chat</string>
+    <string name="title_calendar">Calendar</string>
+    <string name="title_profile">Profile</string>
+
+    <string name="btnLogear">Iniciar Sesión</string>
+    <string name="btnRegistra">Registrarse</string>
+    <string name="bienvenido">Bienvenido</string>
+
+    <string name="OlvidadoContraseña">¿Has olvidado tu contraseña?</string>
+
+    <string name="btnEntrar">Entrar</string>
+    <string name="btnCancelar">Cancelar</string>
+    <string name="hint_IntroduceTuCorreo">Introduce tu correo</string>
+    <string name="hint_IntroduceTuContraseña">Introduce tu contraseña</string>
+
+</resources>

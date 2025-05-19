@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@android:color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp"
+    tools:ignore="MissingClass">
+
+    <!-- Campo de búsqueda -->
+    <EditText
+        android:id="@+id/searchBar"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:hint="🔍 Buscar..."
+        android:background="@color/gris"
+        android:paddingHorizontal="12dp"
+        android:textColor="@android:color/black"
+        android:textColorHint="#999"
+        android:layout_marginBottom="10dp" />
+
+    <!-- Título -->
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Empresas Recomendadas"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="8dp" />
+
+    <!-- Lista de servicios -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerEmpresa"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scrollbars="vertical"/>
+
+
+
+
+
+
+</LinearLayout>
