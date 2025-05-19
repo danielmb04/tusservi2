@@ -13,8 +13,8 @@
 
     <fragment
         android:id="@+id/navigation_chat"
-        android:name="es.studium.tusservi.ui.chat.ChatFragment"
-        tools:layout="@layout/fragment_chat" />
+        android:name="es.studium.tusservi.ChatSelectorFragment"
+        tools:layout="@layout/fragment_chat_selector" />
 
     <fragment
         android:id="@+id/navigation_calendar"

@@ -19,9 +19,9 @@ public class WelcomeActivity extends AppCompatActivity {
             startActivity(new Intent(WelcomeActivity.this, LoginActivity.class));
         });
 
-      /**  btnRegistro.setOnClickListener(v -> {
-            startActivity(new Intent(WelcomeActivity.this, RegisterActivity.class));
-        });**/
+        btnRegistro.setOnClickListener(v -> {
+            startActivity(new Intent(WelcomeActivity.this, RegistroActivity.class));
+        });
     }
 }
 

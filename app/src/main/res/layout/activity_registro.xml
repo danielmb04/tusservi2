@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Tipo de usuario -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tipo de usuario"
+            android:textSize="16sp"
+            android:paddingTop="8dp"/>
+
+        <RadioGroup
+            android:id="@+id/radioGroupTipo"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/radioCliente"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cliente" />
+
+            <RadioButton
+                android:id="@+id/radioProfesional"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Profesional" />
+        </RadioGroup>
+
+        <!-- Campos comunes -->
+        <EditText
+            android:id="@+id/etNombre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nombre completo"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/etEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Correo electrónico"
+            android:inputType="textEmailAddress" />
+
+        <EditText
+            android:id="@+id/etPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Contraseña"
+            android:inputType="textPassword" />
+
+        <EditText
+            android:id="@+id/etTelefono"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Teléfono"
+            android:inputType="phone" />
+
+        <EditText
+            android:id="@+id/etDireccion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Dirección"
+            android:inputType="textPostalAddress" />
+
+        <EditText
+            android:id="@+id/etCiudad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Ciudad"
+            android:inputType="text" />
+
+        <!-- Imagen -->
+        <Button
+            android:id="@+id/btnSeleccionarImagen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Seleccionar imagen" />
+
+        <ImageView
+            android:id="@+id/imgPerfil"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="12dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_launcher_background" />
+
+        <!-- Campos específicos de profesional -->
+        <LinearLayout
+            android:id="@+id/layoutProfesional"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:paddingTop="8dp">
+
+            <EditText
+                android:id="@+id/etCategoria"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Categoría (Ej: Fontanero)"
+                android:inputType="text" />
+
+            <EditText
+                android:id="@+id/etDescripcion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Descripción del servicio"
+                android:inputType="textMultiLine"
+                android:minLines="2" />
+
+            <EditText
+                android:id="@+id/etExperiencia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Años de experiencia"
+                android:inputType="number" />
+
+            <EditText
+                android:id="@+id/etHorario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Horario"
+                android:inputType="text" />
+
+            <EditText
+                android:id="@+id/etUbicacion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ubicación"
+                android:inputType="text" />
+
+            <EditText
+                android:id="@+id/etRedesSociales"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Redes sociales o web"
+                android:inputType="textUri" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnRegistrarse"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Registrarse"
+            android:layout_marginTop="16dp"/>
+    </LinearLayout>
+</ScrollView>
