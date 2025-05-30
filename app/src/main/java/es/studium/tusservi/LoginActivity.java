@@ -27,6 +27,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
@@ -82,19 +83,28 @@ public class LoginActivity extends AppCompatActivity {
                         JSONObject usuario = respuesta.getJSONObject("usuario");
                         String nombre = usuario.getString("nombre");
                         String tipo = usuario.getString("tipo");
+                        String idProfesional = usuario.optString("idProfesional", "");
+                        String idUsuario = usuario.optString("idUsuario", "");
+
                         // 🔐 GUARDAR DATOS EN SharedPreferences
                         SharedPreferences preferences = getSharedPreferences("session", MODE_PRIVATE);
                         SharedPreferences.Editor editor = preferences.edit();
                         editor.putString("nombre", nombre);
                         editor.putString("tipo_usuario", tipo);
+                        editor.putString("idProfesional", idProfesional);
+                        editor.putString("idUsuario",idUsuario);
+
                         editor.apply();
                         runOnUiThread(() -> {
                             Toast.makeText(LoginActivity.this, "Bienvenido " + nombre, Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             intent.putExtra("nombreUsuario", nombre);
                             intent.putExtra("tipoUsuario", tipo);
+                            intent.putExtra("idProfesional", idProfesional);
+                            intent.putExtra("idUsuario", idUsuario);
                             startActivity(intent);
                             finish();
+
                         });
                     } else {
                         String mensaje = respuesta.getString("message");

@@ -15,13 +15,10 @@
         android:padding="12dp">
 
         <ImageView
-            android:id="@+id/imgEmpresa"
-            android:layout_width="90dp"
-            android:layout_height="90dp"
+            android:id="@+id/imgLogoEmpresa"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/logo_background"
-            android:contentDescription="Imagen empresa"
-            android:background="@drawable/logo_background"
             android:layout_marginEnd="12dp" />
 
         <LinearLayout

@@ -3,51 +3,43 @@ package es.studium.tusservi.ui.profile;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-
+import es.studium.tusservi.LoginActivity;
 import es.studium.tusservi.R;
 import es.studium.tusservi.WelcomeActivity;
 import es.studium.tusservi.databinding.FragmentProfileProfesionalBinding;
 
-public class ProfileFragment extends Fragment {
+public class ProfileProfesionalFragment extends Fragment {
     private FragmentProfileProfesionalBinding binding;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        cargarDatosPerfil(); // Llama al método justo después de inflar el layout
 
         binding = FragmentProfileProfesionalBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        cargarPerfilDesdeServidor();
 
         // Acción: Editar perfil
         binding.btnEditarPerfil.setOnClickListener(v -> {
+            // Aquí puedes abrir un fragmento o actividad para editar perfil
             Toast.makeText(getContext(), "Editar perfil (no implementado)", Toast.LENGTH_SHORT).show();
         });
 
@@ -55,20 +47,24 @@ public class ProfileFragment extends Fragment {
         binding.btnCerrarSesion.setOnClickListener(v -> {
             SharedPreferences preferences = requireContext().getSharedPreferences("session", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
-            editor.clear();
+            editor.clear(); // Borra todos los datos de sesión
             editor.apply();
 
+// Redirige al login
             Intent intent = new Intent(getActivity(), WelcomeActivity.class);
             startActivity(intent);
             requireActivity().finish();
 
             Toast.makeText(getContext(), "Sesión cerrada", Toast.LENGTH_SHORT).show();
+
+            // Ejemplo de cómo podrías redirigir (adaptar según tu app):
+            // startActivity(new Intent(getActivity(), LoginActivity.class));
+            // getActivity().finish();
         });
 
         return root;
     }
-
-    private void cargarPerfilDesdeServidor() {
+    private void cargarDatosPerfil() {
         SharedPreferences preferences = requireContext().getSharedPreferences("session", Context.MODE_PRIVATE);
         String idUsuarioStr = preferences.getString("idUsuario", null);
 
@@ -77,50 +73,35 @@ public class ProfileFragment extends Fragment {
             return;
         }
 
-        int idUsuario = Integer.parseInt(idUsuarioStr); // Solo si lo necesitas como entero
+        int idUsuario = Integer.parseInt(idUsuarioStr);
 
+        String url = "http://10.0.2.2/TUSSERVI/obtenerPerfilProfesional.php?idUsuario=" + idUsuario;
 
-        String BASE_URL = "http://10.0.2.2/TUSSERVI/"; // 🛠️ Sustituye con tu URL real
-
-        RequestQueue queue = Volley.newRequestQueue(requireContext());
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, BASE_URL + "obtenerPerfil.php",
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 response -> {
                     try {
-                        JSONObject jsonObject = new JSONObject(response);
-                        if (jsonObject.getBoolean("success")) {
-                            String nombre = jsonObject.getString("nombre");
-                            String urlFotoRelativa = jsonObject.getString("foto");
-                            String urlFotoCompleta = BASE_URL + urlFotoRelativa;
+                        String nombre = response.getString("nombreUsuario");
+                        String fotoPerfil = response.getString("fotoPerfilProfesional");
 
-                            binding.textNombreProfesional.setText(nombre);
-                            cargarImagenDesdeUrl(urlFotoCompleta);
-                        } else {
-                            Toast.makeText(getContext(), "No se pudo cargar el perfil", Toast.LENGTH_SHORT).show();
-                        }
+                        binding.textNombreProfesional.setText(nombre);
+
+                        // Carga de imagen (puedes usar Glide o Picasso)
+                        Glide.with(requireContext())
+                                .load(fotoPerfil)
+                                .placeholder(R.drawable.ic_launcher_background) // Imagen por defecto
+                                .into(binding.imageProfile);
+
                     } catch (JSONException e) {
                         e.printStackTrace();
+                        Toast.makeText(getContext(), "Error al procesar datos", Toast.LENGTH_SHORT).show();
                     }
                 },
-                error -> Toast.makeText(getContext(), "Error de red", Toast.LENGTH_SHORT).show()
-        ) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("idUsuario", String.valueOf(idUsuario));
-                return params;
-            }
-        };
+                error -> {
+                    error.printStackTrace();
+                    Toast.makeText(getContext(), "Error al conectar con el servidor", Toast.LENGTH_SHORT).show();
+                });
 
-        queue.add(stringRequest);
-    }
-
-    private void cargarImagenDesdeUrl(String urlFoto) {
-        Glide.with(this)
-                .load(urlFoto)
-                .placeholder(R.drawable.ic_launcher_background)  // Imagen mientras carga
-                .error(R.drawable.ic_dashboard_black_24dp)             // Imagen si falla cargar
-                .into(binding.imageProfile);
+        Volley.newRequestQueue(requireContext()).add(request);
     }
 
     @Override

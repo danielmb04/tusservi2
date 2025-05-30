@@ -23,6 +23,6 @@
 
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="es.studium.tusservi.ui.profile.ProfileFragment"
-        tools:layout="@layout/fragment_profile" />
+        android:name="es.studium.tusservi.ProfileSelectorFragment"
+        tools:layout="@layout/fragment_profile_selector" />
 </navigation>

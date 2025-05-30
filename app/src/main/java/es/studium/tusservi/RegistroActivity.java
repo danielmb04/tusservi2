@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,12 +35,13 @@ public class RegistroActivity extends AppCompatActivity {
     RadioGroup radioGroupTipo;
     RadioButton radioCliente, radioProfesional;
     View layoutProfesional;
+    Button btnRegistrarse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro);
-
+btnRegistrarse = findViewById(R.id.btnRegistrarse);
         imgPerfil = findViewById(R.id.imgPerfil);
         radioGroupTipo = findViewById(R.id.radioGroupTipo);
         radioCliente = findViewById(R.id.radioCliente);
@@ -83,6 +85,7 @@ public class RegistroActivity extends AppCompatActivity {
         }
     }
 
+
     void enviarDatosAlServidor() {
         String nombre = ((EditText) findViewById(R.id.etNombre)).getText().toString().trim();
         String email = ((EditText) findViewById(R.id.etEmail)).getText().toString().trim();
@@ -91,10 +94,8 @@ public class RegistroActivity extends AppCompatActivity {
         String direccion = ((EditText) findViewById(R.id.etDireccion)).getText().toString().trim();
         String ciudad = ((EditText) findViewById(R.id.etCiudad)).getText().toString().trim();
 
-        // Obtener el tipo de usuario seleccionado
         String tipoUsuario = radioCliente.isChecked() ? "cliente" : radioProfesional.isChecked() ? "profesional" : "";
 
-        // Campos específicos de profesional (si aplica)
         String categoria = "", descripcion = "", experiencia = "", horario = "", ubicacion = "", redesSociales = "";
         if (tipoUsuario.equals("profesional")) {
             categoria = ((EditText) findViewById(R.id.etCategoria)).getText().toString().trim();
@@ -105,58 +106,71 @@ public class RegistroActivity extends AppCompatActivity {
             redesSociales = ((EditText) findViewById(R.id.etRedesSociales)).getText().toString().trim();
         }
 
+        if (nombre.isEmpty() || email.isEmpty() || password.isEmpty()) {
+            Toast.makeText(this, "Por favor, completa todos los campos obligatorios", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (tipoUsuario.equals("profesional") && (categoria.isEmpty() || descripcion.isEmpty())) {
+            Toast.makeText(this, "Por favor, completa todos los campos del profesional", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         String imagenBase64 = "";
+        String nombreImagen = "";
+
         if (bitmapSeleccionado != null) {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             bitmapSeleccionado.compress(Bitmap.CompressFormat.JPEG, 70, baos);
             byte[] imagenBytes = baos.toByteArray();
-            imagenBase64 = Base64.encodeToString(imagenBytes, Base64.DEFAULT);
+            imagenBase64 = Base64.encodeToString(imagenBytes, Base64.NO_WRAP); // Mejor NO_WRAP para evitar errores de línea
+            nombreImagen = "perfil_" + System.currentTimeMillis() + ".jpg";
         }
 
-        String url = "https://tu-servidor.com/api/registro.php";
 
-        String finalImagenBase64 = imagenBase64;
-        String finalCategoria = categoria;
-        String finalDescripcion = descripcion;
-        String finalExperiencia = experiencia;
-        String finalHorario = horario;
-        String finalUbicacion = ubicacion;
-        String finalRedesSociales = redesSociales;
-        String finalTipoUsuario = tipoUsuario;
+        String url = "http://10.0.2.2/TUSSERVI/registroUsuario.php";
+
+        Map<String, String> parametros = new HashMap<>();
+        parametros.put("nombreUsuario", nombre);
+        parametros.put("emailUsuario", email);
+        parametros.put("contraseñaUsuario", password);
+        parametros.put("telefonoUsuario", telefono);
+        parametros.put("direccionUsuario", direccion);
+        parametros.put("ciudadUsuario", ciudad);
+        parametros.put("tipoUsuario", tipoUsuario);
+
+        if (!imagenBase64.isEmpty()) {
+            parametros.put("imagenBase64", imagenBase64);
+            parametros.put("nombreImagen", nombreImagen);
+            parametros.put("fotoPerfilUsuario", imagenBase64);
+            parametros.put("fotoPerfilProfesional", imagenBase64);// para todos los usuarios
+        }
+
+        if (tipoUsuario.equals("profesional")) {
+            parametros.put("categoriaProfesional", categoria);
+            parametros.put("descripcionProfesional", descripcion);
+            parametros.put("experienciaProfesional", experiencia);
+            parametros.put("horarioProfesional", horario);
+            parametros.put("ubicacionProfesional", ubicacion);
+            parametros.put("redesSocialesProfesional", redesSociales);
+        }
+
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 response -> {
-                    Toast.makeText(getApplicationContext(), "Registro exitoso", Toast.LENGTH_SHORT).show();
-                    // Aquí puedes limpiar campos o redirigir
-                },
-                error -> Toast.makeText(getApplicationContext(), "Error: " + error.toString(), Toast.LENGTH_LONG).show()) {
+                    Toast.makeText(RegistroActivity.this, "Respuesta del servidor: " + response, Toast.LENGTH_LONG).show();
+                    Log.e("RESPUESTA_REGISTRO", response);
 
+                // Redirigir o limpiar campos si es necesario
+                },
+                error -> Toast.makeText(RegistroActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show()
+        ) {
             @Override
             protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("nombre", nombre);
-                params.put("email", email);
-                params.put("password", password);
-                params.put("telefono", telefono);
-                params.put("direccion", direccion);
-                params.put("ciudad", ciudad);
-                params.put("tipoUsuario", finalTipoUsuario);
-
-                if (finalTipoUsuario.equals("profesional")) {
-                    params.put("categoria", finalCategoria);
-                    params.put("descripcion", finalDescripcion);
-                    params.put("experiencia", finalExperiencia);
-                    params.put("horario", finalHorario);
-                    params.put("ubicacion", finalUbicacion);
-                    params.put("redesSociales", finalRedesSociales);
-                }
-
-                params.put("imagen", finalImagenBase64);
-
-                return params;
+                return parametros;
             }
         };
 
         Volley.newRequestQueue(this).add(stringRequest);
     }
-}
+    }

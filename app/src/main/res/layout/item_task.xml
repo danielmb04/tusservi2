@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+    <CheckBox
+        android:id="@+id/checkBoxDone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Descripción de tarea"
+        android:textSize="16sp"
+        android:textColor="#000"
+        android:maxLines="2"
+        android:ellipsize="end"
+        app:layout_constraintStart_toEndOf="@id/checkBoxDone"
+        app:layout_constraintTop_toTopOf="@id/checkBoxDone"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/textViewHours"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="08:00 - 09:00"
+        android:textSize="14sp"
+        android:textColor="#555"
+        app:layout_constraintStart_toStartOf="@id/textViewDescription"
+        app:layout_constraintTop_toBottomOf="@id/textViewDescription"
+        app:layout_constraintEnd_toEndOf="@id/textViewDescription"
+        app:layout_constraintBottom_toBottomOf="@id/checkBoxDone" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

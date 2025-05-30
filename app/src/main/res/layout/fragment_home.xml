@@ -14,12 +14,12 @@
         android:id="@+id/searchBar"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:hint="🔍 Buscar..."
+        android:layout_marginBottom="10dp"
         android:background="@color/gris"
+        android:hint="🔍 Buscar..."
         android:paddingHorizontal="12dp"
         android:textColor="@android:color/black"
-        android:textColorHint="#999"
-        android:layout_marginBottom="10dp" />
+        android:textColorHint="#999" />
 
     <!-- Título -->
     <TextView
