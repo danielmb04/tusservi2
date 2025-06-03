@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layoutEditarServicios"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Título -->
+    <TextView
+        android:id="@+id/txtTituloEditarServicios"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Editar Servicios"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        android:paddingBottom="8dp" />
+
+    <!-- RecyclerView para listar servicios -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerServicios"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <!-- Botón para añadir nuevo servicio -->
+    <Button
+        android:id="@+id/btnAñadirServicio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Añadir Servicio" />
+
+    <!-- Botón para guardar cambios -->
+    <Button
+        android:id="@+id/btnGuardarCambiosServicios"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Guardar Cambios"
+        android:layout_marginTop="8dp" />
+
+</LinearLayout>

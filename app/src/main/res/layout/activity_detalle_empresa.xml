@@ -1,66 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp">
+    android:layout_height="match_parent">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <!-- Contenido scrollable -->
+    <ScrollView
+        android:id="@+id/scrollContenido"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:layout_above="@+id/button">
 
-        <ImageView
-            android:id="@+id/imgLogo"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_launcher_background"/>
-
-        <TextView android:id="@+id/txtNombreEmpresa"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:layout_marginTop="8dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <TextView android:id="@+id/txtDescripcion"
-            android:layout_marginTop="4dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <TextView android:id="@+id/txtUbicacion"
-            android:layout_marginTop="4dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <TextView android:id="@+id/txtHorario"
-            android:layout_marginTop="4dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <TextView android:id="@+id/txtWeb"
-            android:autoLink="web"
-            android:layout_marginTop="4dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <TextView android:id="@+id/txtCategoria"
-            android:layout_marginTop="4dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <TextView
-            android:text="Servicios que ofrece:"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerServicios"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:nestedScrollingEnabled="false" />
-    </LinearLayout>
-</ScrollView>
+            android:padding="16dp">
+
+            <!-- Imagen -->
+            <ImageView
+                android:id="@+id/imgLogo"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_launcher_background" />
+
+            <!-- Nombre de la empresa -->
+            <TextView
+                android:text="Nombre de la empresa:"
+                android:textStyle="bold"
+                android:layout_marginTop="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/txtNombreEmpresa"
+                android:textSize="18sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!-- Descripción -->
+            <TextView
+                android:text="Descripción:"
+                android:textStyle="bold"
+                android:layout_marginTop="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/txtDescripcion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!-- Ubicación -->
+            <TextView
+                android:text="Ubicación:"
+                android:textStyle="bold"
+                android:layout_marginTop="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/txtUbicacion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!-- Horario -->
+            <TextView
+                android:text="Horario:"
+                android:textStyle="bold"
+                android:layout_marginTop="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/txtHorario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!-- Sitio web -->
+            <TextView
+                android:text="Sitio web:"
+                android:textStyle="bold"
+                android:layout_marginTop="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/txtWeb"
+                android:autoLink="web"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!-- Categoría -->
+            <TextView
+                android:text="Categoría:"
+                android:textStyle="bold"
+                android:layout_marginTop="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/txtCategoria"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!-- Experiencia profesional -->
+            <TextView
+                android:text="Experiencia profesional:"
+                android:textStyle="bold"
+                android:layout_marginTop="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/txtExperiencia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!-- Servicios -->
+            <TextView
+                android:text="Servicios que ofrece:"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerServicios"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="true"
+                android:layout_marginTop="8dp"/>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Botón fijo inferior -->
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Contactar"
+        android:layout_alignParentBottom="true" />
+</RelativeLayout>

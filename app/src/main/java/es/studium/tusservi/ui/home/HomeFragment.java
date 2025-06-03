@@ -31,11 +31,15 @@ import es.studium.tusservi.databinding.FragmentHomeBinding;
 import es.studium.tusservi.empresa.Empresa;
 import es.studium.tusservi.empresa.EmpresaAdapter;
 
+import android.text.Editable;
+import android.text.TextWatcher;
+
 public class HomeFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private EmpresaAdapter adapter;
     private List<Empresa> listaEmpresas;
+    private List<Empresa> listaEmpresasOriginal; // guardamos la lista completa original
     private EditText searchBar;
 
     private static final String URL_EMPRESAS = "http://10.0.2.2/TUSSERVI/obtenerEmpresas.php";
@@ -50,10 +54,29 @@ public class HomeFragment extends Fragment {
         searchBar = root.findViewById(R.id.searchBar);
 
         listaEmpresas = new ArrayList<>();
+        listaEmpresasOriginal = new ArrayList<>();
         adapter = new EmpresaAdapter(getContext(), listaEmpresas);
         recyclerView.setAdapter(adapter);
 
         cargarEmpresasDesdeServidor();
+
+        // Añadir listener para filtrar mientras se escribe
+        searchBar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // No usado
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filtrarEmpresas(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // No usado
+            }
+        });
 
         return root;
     }
@@ -68,6 +91,7 @@ public class HomeFragment extends Fragment {
                         if (success) {
                             JSONArray empresasArray = response.getJSONArray("empresas");
                             listaEmpresas.clear();
+                            listaEmpresasOriginal.clear();
 
                             for (int i = 0; i < empresasArray.length(); i++) {
                                 JSONObject obj = empresasArray.getJSONObject(i);
@@ -80,9 +104,12 @@ public class HomeFragment extends Fragment {
                                 String web = obj.getString("webEmpresa");
                                 String logo = obj.getString("logoEmpresa");
                                 String categoria = obj.getString("categoriaProfesional");
+                                int experiencia = obj.getInt("experienciaProfesional");
 
-                                Empresa empresa = new Empresa(id, nombre, descripcion, ubicacion, horario, web, logo, categoria);
+
+                                Empresa empresa = new Empresa(id, nombre, descripcion, ubicacion, horario, web, logo, categoria, experiencia);
                                 listaEmpresas.add(empresa);
+                                listaEmpresasOriginal.add(empresa);
                             }
 
                             adapter.notifyDataSetChanged();
@@ -100,4 +127,22 @@ public class HomeFragment extends Fragment {
         queue.add(request);
     }
 
+    private void filtrarEmpresas(String texto) {
+        texto = texto.toLowerCase().trim();
+        listaEmpresas.clear();
+
+        if (texto.isEmpty()) {
+            listaEmpresas.addAll(listaEmpresasOriginal);
+        } else {
+            for (Empresa empresa : listaEmpresasOriginal) {
+                // Puedes filtrar por nombre o por otra propiedad que quieras
+                if (empresa.getNombre().toLowerCase().contains(texto) ||
+                        empresa.getDescripcion().toLowerCase().contains(texto) ||
+                        empresa.getCategoria().toLowerCase().contains(texto)) {
+                    listaEmpresas.add(empresa);
+                }
+            }
+        }
+        adapter.notifyDataSetChanged();
+    }
 }

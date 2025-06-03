@@ -23,7 +23,7 @@ import java.net.URLEncoder;
 public class LoginActivity extends AppCompatActivity {
 
     EditText etEmail, etPassword;
-    Button btnLogin;
+    Button btnLogin, btnCancelar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
         etEmail = findViewById(R.id.editTextUsuario);
         etPassword = findViewById(R.id.editTextContrasena);
         btnLogin = findViewById(R.id.buttonEntrar);
+        btnCancelar = findViewById(R.id.buttonCancelar);
 
         btnLogin.setOnClickListener(v -> {
             String email = etEmail.getText().toString().trim();
@@ -45,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
                 iniciarSesion(email, password);
             }
         });
+        btnCancelar.setOnClickListener(v -> finish());
     }
 
     private void iniciarSesion(String email, String password) {

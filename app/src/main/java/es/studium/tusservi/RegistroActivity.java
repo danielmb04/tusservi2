@@ -96,14 +96,12 @@ btnRegistrarse = findViewById(R.id.btnRegistrarse);
 
         String tipoUsuario = radioCliente.isChecked() ? "cliente" : radioProfesional.isChecked() ? "profesional" : "";
 
-        String categoria = "", descripcion = "", experiencia = "", horario = "", ubicacion = "", redesSociales = "";
+        String categoria = "", experiencia = "";
         if (tipoUsuario.equals("profesional")) {
             categoria = ((EditText) findViewById(R.id.etCategoria)).getText().toString().trim();
-            descripcion = ((EditText) findViewById(R.id.etDescripcion)).getText().toString().trim();
+
             experiencia = ((EditText) findViewById(R.id.etExperiencia)).getText().toString().trim();
-            horario = ((EditText) findViewById(R.id.etHorario)).getText().toString().trim();
-            ubicacion = ((EditText) findViewById(R.id.etUbicacion)).getText().toString().trim();
-            redesSociales = ((EditText) findViewById(R.id.etRedesSociales)).getText().toString().trim();
+
         }
 
         if (nombre.isEmpty() || email.isEmpty() || password.isEmpty()) {
@@ -111,7 +109,7 @@ btnRegistrarse = findViewById(R.id.btnRegistrarse);
             return;
         }
 
-        if (tipoUsuario.equals("profesional") && (categoria.isEmpty() || descripcion.isEmpty())) {
+        if (tipoUsuario.equals("profesional") && (categoria.isEmpty() || experiencia.isEmpty())) {
             Toast.makeText(this, "Por favor, completa todos los campos del profesional", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -148,11 +146,8 @@ btnRegistrarse = findViewById(R.id.btnRegistrarse);
 
         if (tipoUsuario.equals("profesional")) {
             parametros.put("categoriaProfesional", categoria);
-            parametros.put("descripcionProfesional", descripcion);
             parametros.put("experienciaProfesional", experiencia);
-            parametros.put("horarioProfesional", horario);
-            parametros.put("ubicacionProfesional", ubicacion);
-            parametros.put("redesSocialesProfesional", redesSociales);
+
         }
 
 

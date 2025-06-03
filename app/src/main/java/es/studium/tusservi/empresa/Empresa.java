@@ -3,11 +3,11 @@ package es.studium.tusservi.empresa;
 import java.io.Serializable;
 
 public class Empresa implements Serializable {
-    private int id;
+    private int id, experiencia;
     private String nombre, descripcion, ubicacion, horario, web, logo, categoria;
 
     public Empresa(int id, String nombre, String descripcion, String ubicacion,
-                   String horario, String web, String logo, String categoria) {
+                   String horario, String web, String logo, String categoria, int experiencia) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -16,6 +16,7 @@ public class Empresa implements Serializable {
         this.web = web;
         this.logo = logo;
         this.categoria = categoria;
+        this.experiencia = experiencia;
     }
 
     public int getId() { return id; }
@@ -26,9 +27,10 @@ public class Empresa implements Serializable {
     public String getWeb() { return web; }
 
     public String getLogo() {
-        return null;
+        return logo;
     }
     public String getCategoria() { return categoria; }
+    public int getExperiencia() { return experiencia; }
 
 
     public void setLogo(String logo) {

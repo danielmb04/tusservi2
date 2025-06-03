@@ -113,40 +113,12 @@
                 android:inputType="text" />
 
             <EditText
-                android:id="@+id/etDescripcion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Descripción del servicio"
-                android:inputType="textMultiLine"
-                android:minLines="2" />
-
-            <EditText
                 android:id="@+id/etExperiencia"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Años de experiencia"
                 android:inputType="number" />
 
-            <EditText
-                android:id="@+id/etHorario"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Horario"
-                android:inputType="text" />
-
-            <EditText
-                android:id="@+id/etUbicacion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Ubicación"
-                android:inputType="text" />
-
-            <EditText
-                android:id="@+id/etRedesSociales"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Redes sociales o web"
-                android:inputType="textUri" />
         </LinearLayout>
 
         <Button

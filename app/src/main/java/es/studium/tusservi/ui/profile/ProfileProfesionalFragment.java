@@ -39,9 +39,10 @@ public class ProfileProfesionalFragment extends Fragment {
 
         // Acción: Editar perfil
         binding.btnEditarPerfil.setOnClickListener(v -> {
-            // Aquí puedes abrir un fragmento o actividad para editar perfil
-            Toast.makeText(getContext(), "Editar perfil (no implementado)", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getActivity(), EditarPerfilProfesionalActivity.class);
+            startActivity(intent);
         });
+
 
         // Acción: Cerrar sesión
         binding.btnCerrarSesion.setOnClickListener(v -> {

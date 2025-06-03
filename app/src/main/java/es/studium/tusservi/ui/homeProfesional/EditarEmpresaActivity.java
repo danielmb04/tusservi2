@@ -31,6 +31,7 @@ import java.util.Map;
 
 import es.studium.tusservi.R;
 import es.studium.tusservi.empresa.Empresa;
+import es.studium.tusservi.servicio.Servicio;
 
 public class EditarEmpresaActivity extends AppCompatActivity {
 
@@ -47,6 +48,9 @@ public class EditarEmpresaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editar_empresa);
+
+        Button btnEditarServicios = findViewById(R.id.btnEditarServicios);
+        btnEditarServicios.setOnClickListener(v -> abrirDialogEditarServicios());
 
         etNombre = findViewById(R.id.etNombre);
         etDescripcion = findViewById(R.id.etDescripcion);
@@ -92,6 +96,12 @@ public class EditarEmpresaActivity extends AppCompatActivity {
         btnSeleccionarLogo.setOnClickListener(v -> seleccionarImagen());
 
         btnGuardar.setOnClickListener(v -> guardarCambios());
+    }
+    private void abrirDialogEditarServicios() {
+        // Abre una nueva Activity o DialogFragment donde el usuario pueda ver, editar o eliminar servicios
+        Intent intent = new Intent(this, EditarServiciosActivity.class);
+        intent.putExtra("idEmpresa", empresa.getId());
+        startActivity(intent);
     }
 
     private void seleccionarImagen() {

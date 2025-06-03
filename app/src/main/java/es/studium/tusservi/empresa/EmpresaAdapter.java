@@ -46,13 +46,7 @@ public class EmpresaAdapter extends RecyclerView.Adapter<EmpresaAdapter.EmpresaV
         String logo = empresa.getLogo();
         Log.d("EmpresaAdapter", "logo recibido: '" + logo + "'");
 
-        // Limpiar y validar logo
-        if (logo != null) {
-            logo = logo.trim();
-            if (logo.equalsIgnoreCase("null") || logo.isEmpty()) {
-                logo = null; // Tratamos "null" como que no hay imagen
-            }
-        }
+
 
         if (logo != null) {
             // Limpiar el nombre por si trae la carpeta "logos/"
@@ -79,6 +73,8 @@ public class EmpresaAdapter extends RecyclerView.Adapter<EmpresaAdapter.EmpresaV
             intent.putExtra("horario", empresa.getHorario());
             intent.putExtra("web", empresa.getWeb());
             intent.putExtra("categoria", empresa.getCategoria());
+            intent.putExtra("experiencia", empresa.getExperiencia());
+            intent.putExtra("logo", empresa.getLogo());
             context.startActivity(intent);
         });
 

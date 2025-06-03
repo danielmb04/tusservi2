@@ -159,9 +159,10 @@ public class HomeProfesionalFragment extends Fragment {
                                     logo = "";
                                 }
 
-                                String categoria = obj.optString("categoriaProfesional", "");
+                                String categoria = obj.optString("categoriaProfesional");
+                                int experiencia = obj.optInt("experienciaProfesional");
 
-                                Empresa empresa = new Empresa(id, nombre, descripcion, ubicacion, horario, web, logo, categoria);
+                                Empresa empresa = new Empresa(id, nombre, descripcion, ubicacion, horario, web, logo, categoria, experiencia);
                                 listaEmpresas.add(empresa);
                             }
 
