@@ -65,6 +65,11 @@ public class ProfileProfesionalFragment extends Fragment {
 
         return root;
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        cargarDatosPerfil(); // Se ejecuta siempre que el fragmento se vuelve visible
+    }
     private void cargarDatosPerfil() {
         SharedPreferences preferences = requireContext().getSharedPreferences("session", Context.MODE_PRIVATE);
         String idUsuarioStr = preferences.getString("idUsuario", null);
@@ -86,10 +91,11 @@ public class ProfileProfesionalFragment extends Fragment {
 
                         binding.textNombreProfesional.setText(nombre);
 
-                        // Carga de imagen (puedes usar Glide o Picasso)
+                        String fotoPerfilUrl = response.getString("fotoPerfilProfesional");
+
                         Glide.with(requireContext())
-                                .load(fotoPerfil)
-                                .placeholder(R.drawable.ic_launcher_background) // Imagen por defecto
+                                .load(fotoPerfilUrl)
+                                .placeholder(R.drawable.ic_launcher_background)
                                 .into(binding.imageProfile);
 
                     } catch (JSONException e) {

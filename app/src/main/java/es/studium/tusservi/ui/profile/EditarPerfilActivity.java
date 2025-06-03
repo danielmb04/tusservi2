@@ -31,12 +31,12 @@ import java.io.IOException;
 
 import es.studium.tusservi.R;
 
-public class EditarPerfilProfesionalActivity extends AppCompatActivity {
+public class EditarPerfilActivity extends AppCompatActivity {
 
     private static final int PICK_IMAGE_REQUEST = 1;
 
     EditText editNombreUsuario, editEmailUsuario, editContrasenaUsuario, editTelefonoUsuario,
-            editDireccionUsuario, editCiudadUsuario, editCategoriaProfesional, editExperienciaProfesional;
+            editDireccionUsuario, editCiudadUsuario;
     ImageView imgFotoPerfil;
     Button btnCambiarFoto, btnGuardarCambios;
     Uri imagenSeleccionadaUri;
@@ -46,7 +46,7 @@ public class EditarPerfilProfesionalActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_editar_perfil_profesional);
+        setContentView(R.layout.activity_editar_perfil);
 
         // Enlazar vistas
         editNombreUsuario = findViewById(R.id.editNombreUsuario);
@@ -55,16 +55,14 @@ public class EditarPerfilProfesionalActivity extends AppCompatActivity {
         editTelefonoUsuario = findViewById(R.id.editTelefonoUsuario);
         editDireccionUsuario = findViewById(R.id.editDireccionUsuario);
         editCiudadUsuario = findViewById(R.id.editCiudadUsuario);
-        editCategoriaProfesional = findViewById(R.id.editCategoriaProfesional);
-        editExperienciaProfesional = findViewById(R.id.editExperienciaProfesional);
         imgFotoPerfil = findViewById(R.id.imgFotoPerfil);
         btnCambiarFoto = findViewById(R.id.btnCambiarFoto);
         btnGuardarCambios = findViewById(R.id.btnGuardarCambios);
 
-        int idProfesional = Integer.parseInt(obtenerIdUsuarioDesdePreferencias());
-        cargarDatosPerfil(idProfesional);
+        int idUsuario = Integer.parseInt(obtenerIdUsuarioDesdePreferencias());
+        cargarDatosPerfil(idUsuario);
 
-        btnGuardarCambios.setOnClickListener(v -> guardarCambios(idProfesional, bitmapSeleccionado));
+        btnGuardarCambios.setOnClickListener(v -> guardarCambios(idUsuario, bitmapSeleccionado));
 
         btnCambiarFoto.setOnClickListener(v -> abrirGaleria());
     }
@@ -84,8 +82,8 @@ public class EditarPerfilProfesionalActivity extends AppCompatActivity {
         return id;
     }
 
-    private void cargarDatosPerfil(int idProfesional) {
-        String url = "http://10.0.2.2/TUSSERVI/obtenerDatosProfesional.php?idProfesional=" + idProfesional;
+    private void cargarDatosPerfil(int idUsuario) {
+        String url = "http://10.0.2.2/TUSSERVI/obtenerDatosCliente.php?idUsuario=" + idUsuario;
 
         RequestQueue queue = Volley.newRequestQueue(this);
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
@@ -97,15 +95,14 @@ public class EditarPerfilProfesionalActivity extends AppCompatActivity {
                         editTelefonoUsuario.setText(response.getString("telefonoUsuario"));
                         editDireccionUsuario.setText(response.getString("direccionUsuario"));
                         editCiudadUsuario.setText(response.getString("ciudadUsuario"));
-                        editCategoriaProfesional.setText(response.getString("categoriaProfesional"));
-                        editExperienciaProfesional.setText(String.valueOf(response.getInt("experienciaProfesional")));
 
-                        String nombreFoto = response.getString("fotoPerfilProfesional");
+
+                        String nombreFoto = response.getString("fotoPerfilUsuario");
                         if (nombreFoto != null && !nombreFoto.isEmpty()) {
                             String fotoUrl = "http://10.0.2.2/TUSSERVI/uploads/" + nombreFoto + "?t=" + System.currentTimeMillis();
                             Log.d("EditarPerfil", "Cargando imagen desde URL: " + fotoUrl);
 
-                            Glide.with(EditarPerfilProfesionalActivity.this)
+                            Glide.with(EditarPerfilActivity.this)
                                     .load(fotoUrl)
                                     .placeholder(R.drawable.ic_launcher_background)
                                     .error(R.drawable.ic_launcher_foreground)
@@ -134,20 +131,13 @@ public class EditarPerfilProfesionalActivity extends AppCompatActivity {
         return "data:image/jpeg;base64," + Base64.encodeToString(bytes, Base64.DEFAULT);
     }
 
-    private void guardarCambios(int idProfesional, Bitmap imagenPerfilBitmap) {
-        String url = "http://10.0.2.2/TUSSERVI/actualizarDatosProfesional.php";
+    private void guardarCambios(int idUsuario, Bitmap imagenPerfilBitmap) {
+        String url = "http://10.0.2.2/TUSSERVI/actualizarDatosCliente.php";
 
-        int experiencia;
-        try {
-            experiencia = Integer.parseInt(editExperienciaProfesional.getText().toString());
-        } catch (NumberFormatException e) {
-            Toast.makeText(this, "La experiencia debe ser un número", Toast.LENGTH_SHORT).show();
-            return;
-        }
 
         JSONObject datos = new JSONObject();
         try {
-            datos.put("idProfesional", idProfesional);
+            datos.put("idUsuario", idUsuario);
             datos.put("nombreUsuario", editNombreUsuario.getText().toString());
             datos.put("emailUsuario", editEmailUsuario.getText().toString());
             datos.put("contraseñaUsuario", editContrasenaUsuario.getText().toString());
@@ -156,12 +146,11 @@ public class EditarPerfilProfesionalActivity extends AppCompatActivity {
             datos.put("ciudadUsuario", editCiudadUsuario.getText().toString());
             if(imagenPerfilBitmap != null) {
                 String base64Imagen = convertirBitmapABase64(imagenPerfilBitmap);
-                datos.put("fotoPerfilProfesional", base64Imagen);
+                datos.put("fotoPerfilUsuario", base64Imagen);
             } else {
-                datos.put("fotoPerfilProfesional", JSONObject.NULL);
+                datos.put("fotoPerfilUsuario", JSONObject.NULL);
             }
-            datos.put("categoriaProfesional", editCategoriaProfesional.getText().toString());
-            datos.put("experienciaProfesional", experiencia);
+
         } catch (JSONException e) {
             e.printStackTrace();
             Toast.makeText(this, "Error al preparar los datos", Toast.LENGTH_SHORT).show();

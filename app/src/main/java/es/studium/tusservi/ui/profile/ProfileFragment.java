@@ -48,7 +48,8 @@ public class ProfileFragment extends Fragment {
 
         // Acción: Editar perfil
         binding.btnEditarPerfil.setOnClickListener(v -> {
-            Toast.makeText(getContext(), "Editar perfil (no implementado)", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getActivity(), EditarPerfilActivity.class);
+            startActivity(intent);
         });
 
         // Acción: Cerrar sesión
@@ -91,10 +92,15 @@ public class ProfileFragment extends Fragment {
                         if (jsonObject.getBoolean("success")) {
                             String nombre = jsonObject.getString("nombre");
                             String urlFotoRelativa = jsonObject.getString("foto");
-                            String urlFotoCompleta = BASE_URL + urlFotoRelativa;
+                            String urlFotoCompleta = BASE_URL;
+                            if (!BASE_URL.endsWith("/")) {
+                                urlFotoCompleta += "/";
+                            }
+                            urlFotoCompleta += "uploads/" + urlFotoRelativa;
 
                             binding.textNombreProfesional.setText(nombre);
                             cargarImagenDesdeUrl(urlFotoCompleta);
+
                         } else {
                             Toast.makeText(getContext(), "No se pudo cargar el perfil", Toast.LENGTH_SHORT).show();
                         }
@@ -122,7 +128,11 @@ public class ProfileFragment extends Fragment {
                 .error(R.drawable.ic_dashboard_black_24dp)             // Imagen si falla cargar
                 .into(binding.imageProfile);
     }
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        cargarPerfilDesdeServidor(); // Se ejecuta siempre que el fragmento se vuelve visible
+    }
     @Override
     public void onDestroyView() {
         super.onDestroyView();
