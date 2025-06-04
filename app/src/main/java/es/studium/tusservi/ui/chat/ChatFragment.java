@@ -68,14 +68,15 @@ public class ChatFragment extends Fragment {
                             JSONObject obj = response.getJSONObject(i);
                             int idUsuario = obj.getInt("idUsuario");
                             String nombre = obj.getString("nombreUsuario");
-                            listaUsuarios.add(new Usuario(idUsuario, nombre));
+                            String urlImagenPerfil = obj.optString("fotoPerfilUsuario", "");  // nombre del campo que envíes desde PHP
+
+                            listaUsuarios.add(new Usuario(idUsuario, nombre, urlImagenPerfil));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
                     adapter.notifyDataSetChanged();
 
-                    // Mostrar mensaje si lista vacía
                     binding.txtSinConversaciones.setVisibility(listaUsuarios.isEmpty() ? View.VISIBLE : View.GONE);
                 },
                 error -> {
@@ -87,6 +88,7 @@ public class ChatFragment extends Fragment {
 
         Volley.newRequestQueue(requireContext()).add(request);
     }
+
 
     private void abrirChatConUsuario(Usuario usuario) {
         Intent intent = new Intent(getContext(), ChatMensajesActivity.class);

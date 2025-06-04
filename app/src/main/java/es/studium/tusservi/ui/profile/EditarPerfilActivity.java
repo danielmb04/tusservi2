@@ -99,7 +99,7 @@ public class EditarPerfilActivity extends AppCompatActivity {
 
                         String nombreFoto = response.getString("fotoPerfilUsuario");
                         if (nombreFoto != null && !nombreFoto.isEmpty()) {
-                            String fotoUrl = "http://10.0.2.2/TUSSERVI/uploads/" + nombreFoto + "?t=" + System.currentTimeMillis();
+                            String fotoUrl = "http://10.0.2.2/TUSSERVI/" + nombreFoto + "?t=" + System.currentTimeMillis();
                             Log.d("EditarPerfil", "Cargando imagen desde URL: " + fotoUrl);
 
                             Glide.with(EditarPerfilActivity.this)

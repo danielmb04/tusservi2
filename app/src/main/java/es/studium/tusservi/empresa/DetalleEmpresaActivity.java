@@ -40,6 +40,14 @@ public class DetalleEmpresaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalle_empresa);
+        RecyclerView recyclerProfesionales = findViewById(R.id.recyclerProfesionales);
+        recyclerProfesionales.setLayoutManager(new LinearLayoutManager(this));
+        List<Profesional> listaProfesionales = new ArrayList<>();
+        ProfesionalAdapter profesionalAdapter = new ProfesionalAdapter(listaProfesionales);
+        recyclerProfesionales.setAdapter(profesionalAdapter);
+
+
+
 
         txtNombre = findViewById(R.id.txtNombreEmpresa);
         txtDescripcion = findViewById(R.id.txtDescripcion);
@@ -79,7 +87,9 @@ public class DetalleEmpresaActivity extends AppCompatActivity {
 
         Toast.makeText(this, "ID empresa: " + idEmpresaFK, Toast.LENGTH_SHORT).show();
 
+        cargarProfesionales(idEmpresaFK, listaProfesionales, profesionalAdapter);
         cargarServiciosEmpresa();
+
     }
 
     private void cargarServiciosEmpresa() {
@@ -123,4 +133,43 @@ public class DetalleEmpresaActivity extends AppCompatActivity {
 
         Volley.newRequestQueue(this).add(request);
     }
+    private void cargarProfesionales(int idEmpresa, List<Profesional> ListaProfesionales, ProfesionalAdapter profesionalAdapter) {
+        Log.d("DetalleEmpresa", "idEmpresa enviado: " + idEmpresa);
+
+
+        String url = "http://10.0.2.2/TUSSERVI/obtenerProfesionalesPorEmpresa.php?idEmpresa=" + idEmpresa;
+
+        JsonObjectRequest jsonRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                null,
+                response -> {
+                    try {
+                        Log.d("JSON response", response.toString());
+
+                        JSONArray array = response.getJSONArray("profesionales");
+                        for (int i = 0; i < array.length(); i++) {
+                            JSONObject obj = array.getJSONObject(i);
+                            String nombre = obj.getString("nombre");
+                            String categoria = obj.getString("categoria");
+                            String fotoPerfil = obj.getString("fotoPerfil"); // URL completa de la imagen
+
+                            ListaProfesionales.add(new Profesional(nombre, categoria, fotoPerfil));
+                        }
+                        profesionalAdapter.notifyDataSetChanged();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Toast.makeText(this, "Error al procesar profesionales", Toast.LENGTH_SHORT).show();
+                    }
+                },
+                error -> {
+                    error.printStackTrace();
+                    Toast.makeText(this, "Error de conexión al cargar profesionales", Toast.LENGTH_SHORT).show();
+                }
+        );
+
+        Volley.newRequestQueue(this).add(jsonRequest);
+    }
+
+
 }

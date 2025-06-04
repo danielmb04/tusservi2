@@ -96,7 +96,8 @@ public class ProfileFragment extends Fragment {
                             if (!BASE_URL.endsWith("/")) {
                                 urlFotoCompleta += "/";
                             }
-                            urlFotoCompleta += "uploads/" + urlFotoRelativa;
+                            urlFotoCompleta += urlFotoRelativa;
+
 
                             binding.textNombreProfesional.setText(nombre);
                             cargarImagenDesdeUrl(urlFotoCompleta);

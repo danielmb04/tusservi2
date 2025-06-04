@@ -24,6 +24,13 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_launcher_background" />
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerProfesionales"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                />
+
             <!-- Nombre de la empresa -->
             <TextView
                 android:text="Nombre de la empresa:"

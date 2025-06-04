@@ -3,10 +3,13 @@ package es.studium.tusservi.ui.chat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -20,6 +23,7 @@ public class UsuarioAdapter extends RecyclerView.Adapter<UsuarioAdapter.UsuarioV
 
     private final List<Usuario> listaUsuarios;
     private final OnUsuarioClickListener listener;
+
 
     public UsuarioAdapter(List<Usuario> listaUsuarios, OnUsuarioClickListener listener) {
         this.listaUsuarios = listaUsuarios;
@@ -38,8 +42,18 @@ public class UsuarioAdapter extends RecyclerView.Adapter<UsuarioAdapter.UsuarioV
     public void onBindViewHolder(@NonNull UsuarioViewHolder holder, int position) {
         Usuario usuario = listaUsuarios.get(position);
         holder.txtNombreUsuario.setText(usuario.getNombre());
+        String URL_BASE = "http://10.0.2.2/TUSSERVI/";
+        String urlImagenCompleta = URL_BASE + usuario.getUrlImagenPerfil();
+        // Si tienes la URL del perfil:
+
+        Glide.with(holder.imgPerfil.getContext())
+                .load(urlImagenCompleta)
+                .placeholder(R.drawable.ic_launcher_background)
+                .circleCrop()
+                .into(holder.imgPerfil);
 
         holder.itemView.setOnClickListener(v -> listener.onUsuarioClick(usuario));
+
     }
 
     @Override
@@ -48,11 +62,14 @@ public class UsuarioAdapter extends RecyclerView.Adapter<UsuarioAdapter.UsuarioV
     }
 
     public static class UsuarioViewHolder extends RecyclerView.ViewHolder {
+        public ImageView imgPerfil;
         TextView txtNombreUsuario;
+
 
         public UsuarioViewHolder(@NonNull View itemView) {
             super(itemView);
             txtNombreUsuario = itemView.findViewById(R.id.txtNombreUsuario);
+            imgPerfil = itemView.findViewById(R.id.imgPerfil);
         }
     }
 }
