@@ -1,8 +1,10 @@
 package es.studium.tusservi.empresa;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +28,10 @@ import java.util.List;
 import es.studium.tusservi.R;
 import es.studium.tusservi.servicio.Servicio;
 import es.studium.tusservi.servicio.ServicioAdapter;
+import es.studium.tusservi.ui.chat.ChatFragment;
+import es.studium.tusservi.ui.chat.ChatMensajesActivity;
+import es.studium.tusservi.empresa.Profesional;
+import es.studium.tusservi.empresa.ProfesionalAdapter;
 
 public class DetalleEmpresaActivity extends AppCompatActivity {
 
@@ -35,6 +41,7 @@ public class DetalleEmpresaActivity extends AppCompatActivity {
     ServicioAdapter servicioAdapter;
     List<Servicio> listaServicios = new ArrayList<>();
     int idEmpresaFK;
+    Button btnContactar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,12 +50,34 @@ public class DetalleEmpresaActivity extends AppCompatActivity {
         RecyclerView recyclerProfesionales = findViewById(R.id.recyclerProfesionales);
         recyclerProfesionales.setLayoutManager(new LinearLayoutManager(this));
         List<Profesional> listaProfesionales = new ArrayList<>();
-        ProfesionalAdapter profesionalAdapter = new ProfesionalAdapter(listaProfesionales);
+        ProfesionalAdapter profesionalAdapter = new ProfesionalAdapter(listaProfesionales, profesional -> {
+            SharedPreferences prefs = getSharedPreferences("session", MODE_PRIVATE);
+            String idClienteStr = prefs.getString("idUsuario", "-1");
+            int idCliente = Integer.parseInt(idClienteStr);
+
+
+            // o como tengas guardado el ID del usuario actual
+            int idProfesionalUsuario = profesional.getIdUsuario(); // este debe ser el ID de la tabla Usuarios
+            Log.d("DEBUG", "idCliente: " + idCliente + ", idUsuarioProfesional: " + idProfesionalUsuario);
+
+            if (idCliente == -1 || idProfesionalUsuario == -1) {
+                Toast.makeText(this, "IDs inválidos", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            Intent intentChat = new Intent(DetalleEmpresaActivity.this, ChatMensajesActivity.class);
+            intentChat.putExtra("idEmisor", idCliente);
+            intentChat.putExtra("idReceptor", idProfesionalUsuario);
+            startActivity(intentChat);
+        });
+
+
+
         recyclerProfesionales.setAdapter(profesionalAdapter);
 
 
 
-
+        btnContactar = findViewById(R.id.button);
         txtNombre = findViewById(R.id.txtNombreEmpresa);
         txtDescripcion = findViewById(R.id.txtDescripcion);
         txtUbicacion = findViewById(R.id.txtUbicacion);
@@ -89,6 +118,9 @@ public class DetalleEmpresaActivity extends AppCompatActivity {
 
         cargarProfesionales(idEmpresaFK, listaProfesionales, profesionalAdapter);
         cargarServiciosEmpresa();
+
+
+
 
     }
 
@@ -134,9 +166,6 @@ public class DetalleEmpresaActivity extends AppCompatActivity {
         Volley.newRequestQueue(this).add(request);
     }
     private void cargarProfesionales(int idEmpresa, List<Profesional> ListaProfesionales, ProfesionalAdapter profesionalAdapter) {
-        Log.d("DetalleEmpresa", "idEmpresa enviado: " + idEmpresa);
-
-
         String url = "http://10.0.2.2/TUSSERVI/obtenerProfesionalesPorEmpresa.php?idEmpresa=" + idEmpresa;
 
         JsonObjectRequest jsonRequest = new JsonObjectRequest(
@@ -145,16 +174,16 @@ public class DetalleEmpresaActivity extends AppCompatActivity {
                 null,
                 response -> {
                     try {
-                        Log.d("JSON response", response.toString());
-
                         JSONArray array = response.getJSONArray("profesionales");
                         for (int i = 0; i < array.length(); i++) {
                             JSONObject obj = array.getJSONObject(i);
+                            int idProfesional = obj.getInt("idProfesional");
+                            int idUsuario = obj.getInt("idUsuario");
                             String nombre = obj.getString("nombre");
                             String categoria = obj.getString("categoria");
-                            String fotoPerfil = obj.getString("fotoPerfil"); // URL completa de la imagen
+                            String fotoPerfil = obj.getString("fotoPerfil");
 
-                            ListaProfesionales.add(new Profesional(nombre, categoria, fotoPerfil));
+                            ListaProfesionales.add(new Profesional(idProfesional, idUsuario, nombre, categoria, fotoPerfil));
                         }
                         profesionalAdapter.notifyDataSetChanged();
                     } catch (JSONException e) {
@@ -170,6 +199,7 @@ public class DetalleEmpresaActivity extends AppCompatActivity {
 
         Volley.newRequestQueue(this).add(jsonRequest);
     }
+
 
 
 }

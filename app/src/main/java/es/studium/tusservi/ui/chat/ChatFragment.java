@@ -62,6 +62,9 @@ public class ChatFragment extends Fragment {
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 response -> {
+
+                    if (binding == null)return;
+
                     listaUsuarios.clear();
                     for (int i = 0; i < response.length(); i++) {
                         try {

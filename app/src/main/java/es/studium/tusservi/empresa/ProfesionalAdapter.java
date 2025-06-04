@@ -3,10 +3,10 @@ package es.studium.tusservi.empresa;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -15,33 +15,30 @@ import java.util.List;
 
 import es.studium.tusservi.R;
 
-public class ProfesionalAdapter extends RecyclerView.Adapter<ProfesionalAdapter.ProfesionalViewHolder> {
+public class ProfesionalAdapter extends RecyclerView.Adapter<ProfesionalAdapter.ViewHolder> {
 
-    private final List<Profesional> listaProfesionales;
+    List<Profesional> listaProfesionales;
+    OnContactarClickListener listener;
 
-    public ProfesionalAdapter(List<Profesional> listaProfesionales) {
+    public interface OnContactarClickListener {
+        void onContactarClick(Profesional profesional);
+    }
+
+    public ProfesionalAdapter(List<Profesional> listaProfesionales, OnContactarClickListener listener) {
         this.listaProfesionales = listaProfesionales;
-    }
-
-    @NonNull
-    @Override
-    public ProfesionalViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View vista = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_profesional, parent, false);
-        return new ProfesionalViewHolder(vista);
+        this.listener = listener;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProfesionalViewHolder holder, int position) {
+    public ProfesionalAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_profesional, parent, false);
+        return new ViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(ProfesionalAdapter.ViewHolder holder, int position) {
         Profesional profesional = listaProfesionales.get(position);
-        holder.txtNombre.setText(profesional.getNombre());
-        holder.txtCategoria.setText(profesional.getCategoria());
-
-        // Cargar imagen con Glide
-        Glide.with(holder.imgFoto.getContext())
-                .load(profesional.getFotoPerfil())
-                .placeholder(R.drawable.ic_launcher_background) // asegúrate de tener esta imagen en res/drawable
-                .error(R.drawable.ic_launcher_foreground)
-                .into(holder.imgFoto);
+        holder.bind(profesional, listener);
     }
 
     @Override
@@ -49,15 +46,33 @@ public class ProfesionalAdapter extends RecyclerView.Adapter<ProfesionalAdapter.
         return listaProfesionales.size();
     }
 
-    public static class ProfesionalViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView txtNombre, txtCategoria;
-        ImageView imgFoto;
+        ImageView imgFotoPerfil;
+        Button btnContactar;
 
-        public ProfesionalViewHolder(@NonNull View itemView) {
+        public ViewHolder(View itemView) {
             super(itemView);
             txtNombre = itemView.findViewById(R.id.txtNombreProfesional);
             txtCategoria = itemView.findViewById(R.id.txtCategoriaProfesional);
-            imgFoto = itemView.findViewById(R.id.imgFotoPerfil);
+            imgFotoPerfil = itemView.findViewById(R.id.imgFotoPerfil);
+            btnContactar = itemView.findViewById(R.id.btnContactar);
+        }
+
+        public void bind(final Profesional profesional, final OnContactarClickListener listener) {
+            txtNombre.setText(profesional.getNombre());
+            txtCategoria.setText(profesional.getCategoria());
+            Glide.with(itemView.getContext())
+                    .load(profesional.getFotoPerfil())
+                    .placeholder(R.drawable.ic_launcher_background)
+                    .error(R.drawable.ic_launcher_foreground)
+                    .into(imgFotoPerfil);
+
+            btnContactar.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onContactarClick(profesional);
+                }
+            });
         }
     }
 }
