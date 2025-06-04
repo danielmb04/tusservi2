@@ -45,6 +45,9 @@
         <activity android:name=".ui.homeProfesional.EditarServiciosActivity"/>
         <activity android:name=".ui.profile.EditarPerfilProfesionalActivity"/>
         <activity android:name=".ui.profile.EditarPerfilActivity"/>
+        <activity android:name=".ui.chat.ChatMensajesActivity"/>
+
+
 
 
 
