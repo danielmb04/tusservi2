@@ -1,14 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- Header: foto + nombre -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/headerChat"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="#D5D4D4"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
+
+        <ImageView
+            android:id="@+id/imgFotoReceptor"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/circle_background2"
+            android:contentDescription="Foto perfil"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_launcher_foreground"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/txtNombreReceptor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="Nombre Usuario"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/imgFotoReceptor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/imgFotoReceptor"
+            app:layout_constraintTop_toTopOf="@id/imgFotoReceptor" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Lista mensajes -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerMensajes"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1" />
 
+    <!-- Barra de escribir mensaje -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,12 +64,19 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:hint="Escribe un mensaje"/>
+            android:hint="Escribe un mensaje"
+            android:background="@drawable/edittext_background"
+            android:padding="8dp"/>
 
         <Button
             android:id="@+id/btnEnviar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Enviar"/>
+            android:text="Enviar"
+            android:textColor="#6200EE"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="12dp"/>
+
     </LinearLayout>
+
 </LinearLayout>

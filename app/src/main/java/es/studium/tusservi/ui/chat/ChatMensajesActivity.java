@@ -2,8 +2,11 @@ package es.studium.tusservi.ui.chat;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,8 +15,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,12 +42,16 @@ public class ChatMensajesActivity extends AppCompatActivity {
     private Handler handler = new Handler();
     private Runnable refrescarMensajesRunnable;
     private static final int INTERVALO_REFRESCO = 3000; // cada 3 segundos
+    private ImageView imgFotoUsuario;
+    private TextView txtNombreUsuario;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_mensajes);
+        imgFotoUsuario = findViewById(R.id.imgFotoReceptor);
+        txtNombreUsuario = findViewById(R.id.txtNombreReceptor);
 
         recyclerMensajes = findViewById(R.id.recyclerMensajes);
         edtMensaje = findViewById(R.id.edtMensaje);
@@ -58,6 +67,7 @@ public class ChatMensajesActivity extends AppCompatActivity {
         btnEnviar.setOnClickListener(v -> enviarMensaje());
 
         obtenerMensajes();
+        cargarDatosUsuarioReceptor();
 
 
     }
@@ -122,6 +132,33 @@ public class ChatMensajesActivity extends AppCompatActivity {
         };
 
         Volley.newRequestQueue(this).add(request);
+    }
+    private void cargarDatosUsuarioReceptor() {
+        String url = "http://10.0.2.2/TUSSERVI/obtenerUsuarioPorId.php?idUsuario=" + idReceptor;
+        Log.d("ChatMensajesActivity", "URL para obtener usuario: " + url);
+
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                response -> {
+                    try {
+                        String nombre = response.getString("nombreUsuario");
+                        String urlFoto = response.getString("fotoPerfilUsuario");
+
+                        txtNombreUsuario.setText(nombre);
+                        // Para la foto usa alguna librería como Glide o Picasso:
+                        Glide.with(this).load("http://10.0.2.2/TUSSERVI/" + urlFoto).into(imgFotoUsuario);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                },
+                error -> {
+                    Log.e("ChatMensajesActivity", "Error al obtener usuario: " + error.toString());
+                }
+        );
+
+        Volley.newRequestQueue(this).add(request);
+
     }
 
     @Override
