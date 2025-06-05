@@ -173,7 +173,7 @@ Button btn;
                     loadTasksForDate(selectedDate);
                     // Crear objeto Task y programar notificación
                     Task nuevaTarea = new Task(
-                            idUsuario, // Puedes usar un ID temporal o ajustar si lo devuelve el servidor
+                            idUsuario , // Puedes usar un ID temporal o ajustar si lo devuelve el servidor
                             selectedDate,
                             descripcion,
                             false,
@@ -216,7 +216,7 @@ Button btn;
                 .getString("idProfesional", "");
         // Devuelve "" si no existe
     }
-    private String obtenerIdUsuarioDesdePreferencias() {
+   /* private String obtenerIdUsuarioDesdePreferencias() {
         SharedPreferences prefs = requireContext().getSharedPreferences("session", Context.MODE_PRIVATE);
         String tipo = prefs.getString("tipo_usuario", "");
         Log.d("DEBUG", "Tipo usuario: " + tipo);
@@ -229,7 +229,12 @@ Button btn;
         }
         Log.d("DEBUG", "ID obtenido: " + id);
         return id;
-    }
+    }*/
+   private String obtenerIdUsuarioDesdePreferencias() {
+       SharedPreferences prefs = requireContext().getSharedPreferences("session", Context.MODE_PRIVATE);
+       return prefs.getString("idUsuario", "");
+   }
+
 
 
 

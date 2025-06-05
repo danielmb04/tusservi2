@@ -181,7 +181,6 @@ public class HomeProfesionalFragment extends Fragment {
 
                         } else {
                             // No tiene empresas
-                            binding.recyclerEmpresas.setVisibility(View.GONE);
                             binding.btnPublicarEmpresa.setVisibility(View.VISIBLE);
                         }
                     } catch (JSONException e) {
