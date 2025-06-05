@@ -1,120 +1,149 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#F8F8F8">
 
     <!-- Contenido scrollable -->
     <ScrollView
         android:id="@+id/scrollContenido"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/button">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:padding="16dp"
+            android:background="@android:color/white"
+            android:elevation="4dp"
+            android:layout_margin="12dp"
+            android:clipToPadding="false"
+            android:divider="@android:color/darker_gray"
+            android:showDividers="none">
 
-            <!-- Imagen -->
+            <!-- Imagen de portada -->
             <ImageView
                 android:id="@+id/imgLogo"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:scaleType="centerCrop"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_rounded"
                 android:src="@drawable/ic_launcher_background" />
 
+            <!-- Recycler de profesionales (si se usa) -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerProfesionales"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                />
+                android:layout_marginBottom="16dp" />
 
-            <!-- Nombre de la empresa -->
+            <!-- Información de la empresa -->
             <TextView
                 android:text="Nombre de la empresa:"
                 android:textStyle="bold"
-                android:layout_marginTop="12dp"
+                android:textSize="16sp"
+                android:textColor="#333"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <TextView
                 android:id="@+id/txtNombreEmpresa"
                 android:textSize="18sp"
+                android:textColor="#444"
+                android:layout_marginBottom="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <!-- Descripción -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#DDDDDD"
+                android:layout_marginVertical="12dp"/>
+
+
             <TextView
                 android:text="Descripción:"
                 android:textStyle="bold"
-                android:layout_marginTop="12dp"
+                android:textSize="16sp"
+                android:layout_marginTop="8dp"
+                android:textColor="#333"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <TextView
                 android:id="@+id/txtDescripcion"
+                android:textColor="#444"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <!-- Ubicación -->
             <TextView
                 android:text="Ubicación:"
                 android:textStyle="bold"
+                android:textSize="16sp"
                 android:layout_marginTop="12dp"
+                android:textColor="#333"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <TextView
                 android:id="@+id/txtUbicacion"
+                android:textColor="#444"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <!-- Horario -->
             <TextView
                 android:text="Horario:"
                 android:textStyle="bold"
+                android:textSize="16sp"
                 android:layout_marginTop="12dp"
+                android:textColor="#333"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <TextView
                 android:id="@+id/txtHorario"
+                android:textColor="#444"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <!-- Sitio web -->
             <TextView
                 android:text="Sitio web:"
                 android:textStyle="bold"
+                android:textSize="16sp"
                 android:layout_marginTop="12dp"
+                android:textColor="#333"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <TextView
                 android:id="@+id/txtWeb"
                 android:autoLink="web"
+                android:textColor="#1E88E5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <!-- Categoría -->
             <TextView
                 android:text="Categoría:"
                 android:textStyle="bold"
+                android:textSize="16sp"
                 android:layout_marginTop="12dp"
+                android:textColor="#333"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <TextView
                 android:id="@+id/txtCategoria"
+                android:textColor="#444"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <!-- Experiencia profesional -->
             <TextView
                 android:text="Experiencia profesional:"
                 android:textStyle="bold"
+                android:textSize="16sp"
                 android:layout_marginTop="12dp"
+                android:textColor="#333"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-
             <TextView
                 android:id="@+id/txtExperiencia"
+                android:textColor="#444"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -123,6 +152,7 @@
                 android:text="Servicios que ofrece:"
                 android:textSize="18sp"
                 android:textStyle="bold"
+                android:textColor="#000"
                 android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -131,11 +161,10 @@
                 android:id="@+id/recyclerServicios"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="true"
-                android:layout_marginTop="8dp"/>
+                android:nestedScrollingEnabled="false"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="20dp" />
         </LinearLayout>
     </ScrollView>
-
-
 
 </RelativeLayout>

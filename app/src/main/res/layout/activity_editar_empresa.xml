@@ -50,19 +50,25 @@
             android:id="@+id/btnSeleccionarLogo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Seleccionar Logo" />
+            android:backgroundTint="@color/AzulAPP"
+            android:text="Seleccionar Logo"
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/btnEditarServicios"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Editar Servicios" />
+            android:text="Editar Servicios"
+            android:backgroundTint="@color/AzulAPP"
+            android:textColor="@color/white"/>
 
         <Button
             android:id="@+id/btnGuardar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Guardar"/>
+            android:text="Guardar"
+            android:backgroundTint="@color/AzulAPP"
+            android:textColor="@color/white"/>
 
     </LinearLayout>
 </ScrollView>

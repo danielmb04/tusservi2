@@ -62,6 +62,8 @@ btnRegistrarse = findViewById(R.id.btnRegistrarse);
 
         Button btnRegistrarse = findViewById(R.id.btnRegistrarse);
         btnRegistrarse.setOnClickListener(v -> enviarDatosAlServidor());
+
+
     }
 
     void abrirGaleria() {
@@ -155,7 +157,7 @@ btnRegistrarse = findViewById(R.id.btnRegistrarse);
                 response -> {
                     Toast.makeText(RegistroActivity.this, "Respuesta del servidor: " + response, Toast.LENGTH_LONG).show();
                     Log.e("RESPUESTA_REGISTRO", response);
-
+finish();
                 // Redirigir o limpiar campos si es necesario
                 },
                 error -> Toast.makeText(RegistroActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show()

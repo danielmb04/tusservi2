@@ -1,47 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:backgroundTint="@color/AmarilloAPP"
+    android:orientation="horizontal"
     android:padding="8dp">
 
     <ImageView
         android:id="@+id/imgFotoPerfil"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:scaleType="centerCrop"
         android:layout_marginEnd="8dp"
-        android:src="@drawable/ic_launcher_foreground"/>
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_launcher_foreground" />
 
     <LinearLayout
-        android:orientation="vertical"
-        android:layout_weight="1"
         android:layout_width="0dp"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/txtNombreProfesional"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="Nombre Profesional"
             android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/txtCategoriaProfesional"
-            android:text="Categoría"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="Categoría" />
     </LinearLayout>
 
     <Button
         android:id="@+id/btnContactar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/AmarilloAPP"
-        android:text="Contactar"
         android:radius="30dp"
-        />
+        android:text="Contactar"
+        android:backgroundTint="@color/AmarilloAPP"
+        android:textColor="#FFFFFFFF"/>
 
 </LinearLayout>

@@ -44,7 +44,9 @@
         app:layout_constraintTop_toBottomOf="@id/textNombreProfesional"
         android:layout_marginTop="32dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        android:backgroundTint="@color/AzulAPP"
+        android:textColor="@color/white"/>
 
     <!-- Botón Cerrar Sesión -->
     <Button

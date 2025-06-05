@@ -33,7 +33,7 @@ public class EditarServiciosActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     ArrayList<Servicio> listaServicios = new ArrayList<>();
     ServicioAdapter adapter;
-    Button btnAñadir;
+    Button btnAñadir, btnGuardarCambiosServicios;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +68,11 @@ public class EditarServiciosActivity extends AppCompatActivity {
 
         btnAñadir = findViewById(R.id.btnAñadirServicio);
         btnAñadir.setOnClickListener(v -> mostrarDialogoAñadirServicio());
+        btnGuardarCambiosServicios = findViewById(R.id.btnGuardarCambiosServicios);
+        btnGuardarCambiosServicios.setOnClickListener(v -> {
+            Toast.makeText(this, "Cambios guardados", Toast.LENGTH_SHORT).show();
+            finish();
+        });
 
         cargarServicios();
     }

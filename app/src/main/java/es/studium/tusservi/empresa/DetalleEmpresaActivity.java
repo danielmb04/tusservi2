@@ -77,7 +77,7 @@ public class DetalleEmpresaActivity extends AppCompatActivity {
 
 
 
-        btnContactar = findViewById(R.id.button);
+
         txtNombre = findViewById(R.id.txtNombreEmpresa);
         txtDescripcion = findViewById(R.id.txtDescripcion);
         txtUbicacion = findViewById(R.id.txtUbicacion);

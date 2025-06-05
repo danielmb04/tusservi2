@@ -29,7 +29,9 @@
         android:id="@+id/btnAñadirServicio"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Añadir Servicio" />
+        android:text="Añadir Servicio"
+        android:backgroundTint="@color/AzulAPP"
+        android:textColor="@color/white"/>
 
     <!-- Botón para guardar cambios -->
     <Button
@@ -37,6 +39,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Guardar Cambios"
-        android:layout_marginTop="8dp" />
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/AzulAPP"
+        android:textColor="@color/white"/>
 
 </LinearLayout>

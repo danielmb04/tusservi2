@@ -46,14 +46,11 @@
             android:hint="Email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            android:enabled="false"
+            />
 
-        <EditText
-            android:id="@+id/editContrasenaUsuario"
-            android:hint="Contraseña"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword" />
+
 
         <EditText
             android:id="@+id/editTelefonoUsuario"
@@ -91,6 +88,13 @@
             android:inputType="textMultiLine"
             android:minLines="3"
             android:gravity="top" />
+        <EditText
+            android:id="@+id/editContrasenaUsuario"
+            android:hint="Contraseña"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:visibility="invisible"/>
 
         <!-- Botón Guardar -->
         <Button
