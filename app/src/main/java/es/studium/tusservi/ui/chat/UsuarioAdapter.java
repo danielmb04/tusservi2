@@ -21,7 +21,7 @@ public class UsuarioAdapter extends RecyclerView.Adapter<UsuarioAdapter.UsuarioV
         void onUsuarioClick(Usuario usuario);
     }
 
-    private final List<Usuario> listaUsuarios;
+    private  List<Usuario> listaUsuarios;
     private final OnUsuarioClickListener listener;
 
 
@@ -72,5 +72,10 @@ public class UsuarioAdapter extends RecyclerView.Adapter<UsuarioAdapter.UsuarioV
             imgPerfil = itemView.findViewById(R.id.imgPerfil);
         }
     }
+    public void actualizarLista(List<Usuario> nuevaLista) {
+        this.listaUsuarios = nuevaLista;
+        notifyDataSetChanged();
+    }
+
 }
 

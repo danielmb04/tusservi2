@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +31,7 @@ public class ChatFragment extends Fragment {
 
     private FragmentChatBinding binding;
     private List<Usuario> listaUsuarios = new ArrayList<>();
+    private List<Usuario> listaUsuariosFiltrados = new ArrayList<>();
     private UsuarioAdapter adapter;
     private int idUsuarioActual;
 
@@ -47,8 +50,40 @@ public class ChatFragment extends Fragment {
         binding.recyclerConversaciones.setAdapter(adapter);
 
         obtenerUsuariosParaChatear();
+        binding.searchBar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filtrarUsuarios(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         return binding.getRoot();
+
+
+
+    }
+    private void filtrarUsuarios(String texto) {
+        listaUsuariosFiltrados.clear();
+        if (texto.isEmpty()) {
+            listaUsuariosFiltrados.addAll(listaUsuarios);
+        } else {
+            for (Usuario u : listaUsuarios) {
+                if (u.getNombre().toLowerCase().contains(texto.toLowerCase())) {
+                    listaUsuariosFiltrados.add(u);
+                }
+            }
+        }
+        adapter.actualizarLista(listaUsuariosFiltrados);
+        binding.txtSinConversaciones.setVisibility(listaUsuariosFiltrados.isEmpty() ? View.VISIBLE : View.GONE);
     }
 
     private int obtenerIdUsuarioDesdeSharedPreferences() {

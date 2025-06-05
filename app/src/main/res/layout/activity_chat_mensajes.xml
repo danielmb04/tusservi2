@@ -67,6 +67,14 @@
             android:hint="Escribe un mensaje"
             android:background="@drawable/edittext_background"
             android:padding="8dp"/>
+        <Button
+            android:id="@+id/btnAdjuntar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Adjuntar"
+            android:textColor="#6200EE"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="12dp"/>
 
         <Button
             android:id="@+id/btnEnviar"

@@ -25,6 +25,18 @@
         android:textColor="@android:color/black"
         android:layout_marginBottom="8dp" />
 
+    <EditText
+        android:id="@+id/searchBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Buscar por nombre..."
+        android:drawableLeft="@android:drawable/ic_menu_search"
+        android:padding="10dp"
+        android:background="@android:drawable/edit_text"
+        android:backgroundTint="@color/gris"
+        android:layout_marginBottom="10dp"/>
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerConversaciones"
         android:layout_width="match_parent"

@@ -37,8 +37,11 @@
 
     <Button
         android:id="@+id/btnContactar"
-        android:text="Contactar"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:background="@color/AmarilloAPP"
+        android:text="Contactar"
+        android:radius="30dp"
+        />
 
 </LinearLayout>

@@ -47,4 +47,7 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'com.github.bumptech.glide:glide:4.15.1' // o la versión que uses
     annotationProcessor 'com.github.bumptech.glide:compiler:4.15.1'
+    implementation 'com.squareup.okhttp3:okhttp:4.10.0'
+
+
 }

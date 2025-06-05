@@ -50,7 +50,8 @@ public class ChatMensajesFragment extends Fragment {
                 .getInt("idUsuario", -1);
 
         binding.recyclerViewMensajes.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new MensajeAdapter(listaMensajes, idUsuario);
+        adapter = new MensajeAdapter(requireContext(), listaMensajes, idUsuario); // ✅
+
         binding.recyclerViewMensajes.setAdapter(adapter);
 
         cargarMensajes();

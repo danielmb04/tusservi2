@@ -7,6 +7,12 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
     <uses-permission android:name="android.permission.USE_EXACT_ALARM"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+
 
 
 
@@ -39,14 +45,24 @@
         <activity android:name=".WelcomeActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".LoginActivity" />
-        <activity android:name=".empresa.DetalleEmpresaActivity" />
+        <activity android:name=".empresa.DetalleEmpresaActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity android:name=".RegistroActivity" />
-        <activity android:name=".ui.homeProfesional.RegistroEmpresaActivity"/>
-        <activity android:name=".ui.homeProfesional.EditarEmpresaActivity"/>
-        <activity android:name=".ui.homeProfesional.EditarServiciosActivity"/>
-        <activity android:name=".ui.profile.EditarPerfilProfesionalActivity"/>
-        <activity android:name=".ui.profile.EditarPerfilActivity"/>
-        <activity android:name=".ui.chat.ChatMensajesActivity"/>
+        <activity android:name=".ui.homeProfesional.RegistroEmpresaActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity android:name=".ui.homeProfesional.EditarEmpresaActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity android:name=".ui.homeProfesional.EditarServiciosActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity android:name=".ui.profile.EditarPerfilProfesionalActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity android:name=".ui.profile.EditarPerfilActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity android:name=".ui.chat.ChatMensajesActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+
+        <activity android:name=".ui.chat.FullScreenImageActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
 
 
