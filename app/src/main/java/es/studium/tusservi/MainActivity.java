@@ -11,7 +11,17 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import es.studium.tusservi.databinding.ActivityMainBinding;
-
+/**
+ * Clase MainActivity
+ *
+ * Esta clase representa la actividad principal de la aplicación TusServi.
+ * Es el punto de entrada después del login y contiene la barra de navegación inferior (BottomNavigationView)
+ * para moverse entre las secciones principales: Inicio (Home), Chat y Perfil.
+ *
+ * Utiliza Navigation Component para gestionar la navegación entre fragmentos mediante un NavHostFragment.
+ *
+ * Hereda de AppCompatActivity para tener soporte con compatibilidad extendida de Android.
+ */
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;

@@ -99,6 +99,37 @@ public class RegistroEmpresaActivity extends AppCompatActivity {
     }
 
     private void guardarEmpresa() {
+        // Limpiar errores anteriores
+        etNombre.setError(null);
+        etDescripcion.setError(null);
+        etUbicacion.setError(null);
+
+        String nombre = etNombre.getText().toString().trim();
+        String descripcion = etDescripcion.getText().toString().trim();
+        String ubicacion = etUbicacion.getText().toString().trim();
+        String horario = etHorario.getText().toString().trim();
+        String web = etWeb.getText().toString().trim();
+
+        boolean error = false;
+
+        if (nombre.isEmpty()) {
+            etNombre.setError("El nombre es obligatorio");
+            error = true;
+        }
+        if (descripcion.isEmpty()) {
+            etDescripcion.setError("La descripción es obligatoria");
+            error = true;
+        }
+        if (ubicacion.isEmpty()) {
+            etUbicacion.setError("La ubicación es obligatoria");
+            error = true;
+        }
+
+        if (error) {
+            // No continuar con el guardado si hay error
+            return;
+        }
+
         String imagenBase64 = "";
         String nombreImagen = "";
 
@@ -109,11 +140,6 @@ public class RegistroEmpresaActivity extends AppCompatActivity {
             imagenBase64 = Base64.encodeToString(imagenBytes, Base64.NO_WRAP);
             nombreImagen = "empresa_" + System.currentTimeMillis() + ".jpg";
         }
-        String nombre = etNombre.getText().toString();
-        String descripcion = etDescripcion.getText().toString();
-        String ubicacion = etUbicacion.getText().toString();
-        String horario = etHorario.getText().toString();
-        String web = etWeb.getText().toString();
 
         String url = "http://10.0.2.2/TUSSERVI/insertEmpresas.php"; // cambia por tu ruta real
 
@@ -134,7 +160,7 @@ public class RegistroEmpresaActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 },
-                error -> Toast.makeText(this, "Error de conexión", Toast.LENGTH_SHORT).show()
+                volleyError -> Toast.makeText(this, "Error de conexión", Toast.LENGTH_SHORT).show()
         ) {
             @Override
             protected Map<String, String> getParams() {
@@ -156,6 +182,7 @@ public class RegistroEmpresaActivity extends AppCompatActivity {
 
         queue.add(request);
     }
+
     private void guardarServicios(int idEmpresa) {
         String url = "http://10.0.2.2/TUSSERVI/insertServicios.php"; // Cambia por tu URL real
 

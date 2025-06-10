@@ -63,21 +63,21 @@
             android:id="@+id/etTelefono"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Teléfono"
+            android:hint="Teléfono (Opcional)"
             android:inputType="phone" />
 
         <EditText
             android:id="@+id/etDireccion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Dirección"
+            android:hint="Dirección (Opcional)"
             android:inputType="textPostalAddress" />
 
         <EditText
             android:id="@+id/etCiudad"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Ciudad"
+            android:hint="Ciudad (Opcional)"
             android:inputType="text" />
 
         <!-- Imagen -->
@@ -85,7 +85,7 @@
             android:id="@+id/btnSeleccionarImagen"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Seleccionar imagen"
+            android:text="Seleccionar imagen "
             android:backgroundTint="@color/AmarilloAPP"
             android:textColor="@color/white"/>
 

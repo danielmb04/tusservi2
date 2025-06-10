@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -48,6 +49,7 @@ import es.studium.tusservi.ui.calendar.TaskAdapter;
 
 public class CalendarFragment extends Fragment {
 Button btn;
+TextView txt;
     private FragmentCalendarBinding binding;
     private List<Task> tasks = new ArrayList<>();
     private TaskAdapter adapter;
@@ -111,57 +113,66 @@ Button btn;
         EditText etDescripcion = dialogView.findViewById(R.id.etDescripcion);
         TimePicker timePickerInicio = dialogView.findViewById(R.id.timePickerInicio);
         TimePicker timePickerFin = dialogView.findViewById(R.id.timePickerFin);
+        TextView tvError = dialogView.findViewById(R.id.tvError);
 
-        // Configura TimePickers a 24h
         timePickerInicio.setIs24HourView(true);
         timePickerFin.setIs24HourView(true);
 
         builder.setView(dialogView);
 
-        builder.setPositiveButton("Guardar", (dialog, which) -> {
+        AlertDialog dialog = builder.create();
+
+        Button btnGuardar = dialogView.findViewById(R.id.btnGuardar);
+        Button btnCancelar = dialogView.findViewById(R.id.btnCancelar);
+
+        btnGuardar.setOnClickListener(v -> {
+            tvError.setVisibility(View.GONE);
+
             String descripcion = etDescripcion.getText().toString().trim();
 
             int horaInicio = timePickerInicio.getHour();
             int minutoInicio = timePickerInicio.getMinute();
-
             int horaFin = timePickerFin.getHour();
             int minutoFin = timePickerFin.getMinute();
 
             if (descripcion.isEmpty()) {
-                Toast.makeText(getContext(), "La descripción no puede estar vacía", Toast.LENGTH_SHORT).show();
+                tvError.setText("La descripción no puede estar vacía");
+                tvError.setVisibility(View.VISIBLE);
                 return;
             }
 
             if (horaFin < horaInicio || (horaFin == horaInicio && minutoFin <= minutoInicio)) {
-                Toast.makeText(getContext(), "La hora de fin debe ser después de la hora de inicio", Toast.LENGTH_SHORT).show();
+                tvError.setText("La hora de fin debe ser después de la hora de inicio");
+                tvError.setVisibility(View.VISIBLE);
                 return;
             }
+
             long idUsuario = 0;
             try {
                 idUsuario = Long.parseLong(obtenerIdUsuarioDesdePreferencias());
             } catch (NumberFormatException e) {
-                Toast.makeText(getContext(), "ID de usuario inválido", Toast.LENGTH_SHORT).show();
+                tvError.setText("ID de usuario inválido");
+                tvError.setVisibility(View.VISIBLE);
                 return;
             }
-            String fechaCreacion = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(selectedDate);
 
+            String fechaCreacion = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(selectedDate);
             String horaInicioStr = String.format(Locale.getDefault(), "%02d:%02d", horaInicio, minutoInicio);
             String horaFinStr = String.format(Locale.getDefault(), "%02d:%02d", horaFin, minutoFin);
 
-            insertarTarea(idUsuario, descripcion, fechaCreacion, horaInicioStr, horaFinStr, false);
-
+            insertarTarea(idUsuario, descripcion, fechaCreacion, horaInicioStr, horaFinStr, false, tvError, dialog);
         });
 
-        builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.cancel());
+        btnCancelar.setOnClickListener(v -> dialog.dismiss());
 
-        builder.show();
+        dialog.show();
     }
 
 
 
-    public void insertarTarea(long idUsuario, String descripcion, String fechaCreacion, String horaInicio, String horaFin, boolean realizada) {
-        String url = URL_INSERTAR_TAREA;  // Usar la constante definida
 
+    public void insertarTarea(long idUsuario, String descripcion, String fechaCreacion, String horaInicio, String horaFin, boolean realizada, TextView tvError, AlertDialog dialog) {
+        String url = URL_INSERTAR_TAREA;
         int realizadaInt = realizada ? 1 : 0;
 
         StringRequest request = new StringRequest(Request.Method.POST, url, response -> {
@@ -169,28 +180,23 @@ Button btn;
                 JSONObject json = new JSONObject(response);
                 boolean success = json.getBoolean("success");
                 if (success) {
-                    Toast.makeText(requireContext(), "Tarea creada!", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss(); // Cierra el diálogo si todo va bien
                     loadTasksForDate(selectedDate);
-                    // Crear objeto Task y programar notificación
-                    Task nuevaTarea = new Task(
-                            idUsuario , // Puedes usar un ID temporal o ajustar si lo devuelve el servidor
-                            selectedDate,
-                            descripcion,
-                            false,
-                            horaInicio,
-                            horaFin
-                    );
+                    Task nuevaTarea = new Task(idUsuario, selectedDate, descripcion, false, horaInicio, horaFin);
                     programarNotificacion(nuevaTarea);
-
                 } else {
-                    Toast.makeText(requireContext(), "Error al crear tarea", Toast.LENGTH_SHORT).show();
+                    tvError.setText("Error al crear tarea");
+                    tvError.setVisibility(View.VISIBLE);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
+                tvError.setText("Error al procesar respuesta");
+                tvError.setVisibility(View.VISIBLE);
             }
         }, error -> {
             error.printStackTrace();
-            Toast.makeText(requireContext(), "Error de conexión", Toast.LENGTH_SHORT).show();
+            tvError.setText("Error de conexión");
+            tvError.setVisibility(View.VISIBLE);
         }) {
             @Override
             protected Map<String, String> getParams() {
@@ -207,6 +213,7 @@ Button btn;
 
         Volley.newRequestQueue(requireContext()).add(request);
     }
+
 
 
 

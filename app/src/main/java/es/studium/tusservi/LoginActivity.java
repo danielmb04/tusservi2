@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -27,7 +26,6 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
@@ -40,19 +38,37 @@ public class LoginActivity extends AppCompatActivity {
             String email = etEmail.getText().toString().trim();
             String password = etPassword.getText().toString().trim();
 
-            if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(LoginActivity.this, "Rellena todos los campos", Toast.LENGTH_SHORT).show();
-            } else {
+            boolean hayError = false;
+
+            if (email.isEmpty()) {
+                etEmail.setError("El email es obligatorio");
+                hayError = true;
+            }
+
+            if (password.isEmpty()) {
+                etPassword.setError("La contraseña es obligatoria");
+                hayError = true;
+            } else if (!validarPassword(password)) {
+                etPassword.setError("La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial");
+                hayError = true;
+            }
+
+            if (!hayError) {
                 iniciarSesion(email, password);
             }
         });
+
         btnCancelar.setOnClickListener(v -> finish());
+    }
+
+    private boolean validarPassword(String password) {
+        return password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=!]).{8,}$");
     }
 
     private void iniciarSesion(String email, String password) {
         new Thread(() -> {
             try {
-                URL url = new URL("http://10.0.2.2/TUSSERVI/login.php"); // Cambia esto por la URL real
+                URL url = new URL("http://10.0.2.2/TUSSERVI/login.php");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
                 conn.setDoOutput(true);
@@ -88,17 +104,15 @@ public class LoginActivity extends AppCompatActivity {
                         String idProfesional = usuario.optString("idProfesional", "");
                         String idUsuario = usuario.optString("idUsuario", "");
 
-                        // 🔐 GUARDAR DATOS EN SharedPreferences
                         SharedPreferences preferences = getSharedPreferences("session", MODE_PRIVATE);
                         SharedPreferences.Editor editor = preferences.edit();
                         editor.putString("nombre", nombre);
                         editor.putString("tipo_usuario", tipo);
                         editor.putString("idProfesional", idProfesional);
-                        editor.putString("idUsuario",idUsuario);
-
+                        editor.putString("idUsuario", idUsuario);
                         editor.apply();
+
                         runOnUiThread(() -> {
-                            Toast.makeText(LoginActivity.this, "Bienvenido " + nombre, Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             intent.putExtra("nombreUsuario", nombre);
                             intent.putExtra("tipoUsuario", tipo);
@@ -106,23 +120,20 @@ public class LoginActivity extends AppCompatActivity {
                             intent.putExtra("idUsuario", idUsuario);
                             startActivity(intent);
                             finish();
-
                         });
                     } else {
                         String mensaje = respuesta.getString("message");
-                        runOnUiThread(() -> Toast.makeText(LoginActivity.this, mensaje, Toast.LENGTH_SHORT).show());
+                        runOnUiThread(() -> etPassword.setError(mensaje));
                     }
                 } else {
-                    runOnUiThread(() -> Toast.makeText(LoginActivity.this, "Error en el servidor", Toast.LENGTH_SHORT).show());
+                    runOnUiThread(() -> etPassword.setError("Error en el servidor"));
                 }
 
                 conn.disconnect();
 
             } catch (Exception e) {
                 e.printStackTrace();
-                runOnUiThread(() ->
-                        Toast.makeText(LoginActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show()
-                );
+                runOnUiThread(() -> etPassword.setError("Error: " + e.getMessage()));
             }
         }).start();
     }

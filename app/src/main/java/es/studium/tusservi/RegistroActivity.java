@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,6 +28,18 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+/**
+ * Clase RegistroActivity
+ *
+ * Esta actividad permite a los nuevos usuarios registrarse en la aplicación TusServi.
+ * Ofrece dos tipos de registro:
+ *  - Cliente: registra nombre, email, contraseña, teléfono, dirección, ciudad e imagen de perfil.
+ *  - Profesional: además de los datos anteriores, se solicitan categoría profesional y experiencia.
+ *
+ * Permite seleccionar una imagen de perfil desde la galería y subir los datos al servidor mediante Volley.
+ *
+ * Hereda de AppCompatActivity.
+ */
 
 public class RegistroActivity extends AppCompatActivity {
 
@@ -87,6 +100,12 @@ btnRegistrarse = findViewById(R.id.btnRegistrarse);
         }
     }
 
+    // Función de validación de contraseña
+    boolean esPasswordValida(String password) {
+        // Mínimo 8 caracteres, al menos una mayúscula, una minúscula, un número y un carácter especial
+        String regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=!]).{8,}$";
+        return password.matches(regex);
+    }
 
     void enviarDatosAlServidor() {
         String nombre = ((EditText) findViewById(R.id.etNombre)).getText().toString().trim();
@@ -95,41 +114,62 @@ btnRegistrarse = findViewById(R.id.btnRegistrarse);
         String telefono = ((EditText) findViewById(R.id.etTelefono)).getText().toString().trim();
         String direccion = ((EditText) findViewById(R.id.etDireccion)).getText().toString().trim();
         String ciudad = ((EditText) findViewById(R.id.etCiudad)).getText().toString().trim();
-
         String tipoUsuario = radioCliente.isChecked() ? "cliente" : radioProfesional.isChecked() ? "profesional" : "";
 
         String categoria = "", experiencia = "";
         if (tipoUsuario.equals("profesional")) {
             categoria = ((EditText) findViewById(R.id.etCategoria)).getText().toString().trim();
-
             experiencia = ((EditText) findViewById(R.id.etExperiencia)).getText().toString().trim();
-
         }
 
-        if (nombre.isEmpty() || email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Por favor, completa todos los campos obligatorios", Toast.LENGTH_SHORT).show();
-            return;
+        boolean hayError = false;
+        if (nombre.isEmpty()) {
+            ((EditText) findViewById(R.id.etNombre)).setError("Nombre requerido");
+            hayError = true;
+        }
+        if (email.isEmpty()) {
+            ((EditText) findViewById(R.id.etEmail)).setError("Email requerido");
+            hayError = true;
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            ((EditText) findViewById(R.id.etEmail)).setError("Introduce un email válido");
+            hayError = true;
+        }
+        if (password.isEmpty()) {
+            ((EditText) findViewById(R.id.etPassword)).setError("Contraseña requerida");
+            hayError = true;
+        } else if (!esPasswordValida(password)) {
+            ((EditText) findViewById(R.id.etPassword)).setError("La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial");
+            hayError = true;
         }
 
-        if (tipoUsuario.equals("profesional") && (categoria.isEmpty() || experiencia.isEmpty())) {
-            Toast.makeText(this, "Por favor, completa todos los campos del profesional", Toast.LENGTH_SHORT).show();
-            return;
+        if (tipoUsuario.isEmpty()) {
+            Toast.makeText(this, "Selecciona un tipo de usuario", Toast.LENGTH_SHORT).show();
+            hayError = true;
         }
+        if (tipoUsuario.equals("profesional")) {
+            if (categoria.isEmpty()) {
+                ((EditText) findViewById(R.id.etCategoria)).setError("Categoría requerida");
+                hayError = true;
+            }
+            if (experiencia.isEmpty()) {
+                ((EditText) findViewById(R.id.etExperiencia)).setError("Experiencia requerida");
+                hayError = true;
+            }
+        }
+
+        if (hayError) return;
 
         String imagenBase64 = "";
         String nombreImagen = "";
-
         if (bitmapSeleccionado != null) {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             bitmapSeleccionado.compress(Bitmap.CompressFormat.JPEG, 70, baos);
             byte[] imagenBytes = baos.toByteArray();
-            imagenBase64 = Base64.encodeToString(imagenBytes, Base64.NO_WRAP); // Mejor NO_WRAP para evitar errores de línea
+            imagenBase64 = Base64.encodeToString(imagenBytes, Base64.NO_WRAP);
             nombreImagen = "perfil_" + System.currentTimeMillis() + ".jpg";
         }
 
-
         String url = "http://10.0.2.2/TUSSERVI/registroUsuario.php";
-
         Map<String, String> parametros = new HashMap<>();
         parametros.put("nombreUsuario", nombre);
         parametros.put("emailUsuario", email);
@@ -143,24 +183,25 @@ btnRegistrarse = findViewById(R.id.btnRegistrarse);
             parametros.put("imagenBase64", imagenBase64);
             parametros.put("nombreImagen", nombreImagen);
             parametros.put("fotoPerfilUsuario", imagenBase64);
-            parametros.put("fotoPerfilProfesional", imagenBase64);// para todos los usuarios
+            parametros.put("fotoPerfilProfesional", imagenBase64);
         }
 
         if (tipoUsuario.equals("profesional")) {
             parametros.put("categoriaProfesional", categoria);
             parametros.put("experienciaProfesional", experiencia);
-
         }
-
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 response -> {
-                    Toast.makeText(RegistroActivity.this, "Respuesta del servidor: " + response, Toast.LENGTH_LONG).show();
-                    Log.e("RESPUESTA_REGISTRO", response);
-finish();
-                // Redirigir o limpiar campos si es necesario
+                    if (response.trim().equalsIgnoreCase("success")) {
+                        Toast.makeText(RegistroActivity.this, "Registro completado con éxito", Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        Toast.makeText(RegistroActivity.this, "" + response, Toast.LENGTH_LONG).show();
+                    }
+                    finish();
                 },
-                error -> Toast.makeText(RegistroActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show()
+                error -> Toast.makeText(RegistroActivity.this, "Error de conexión", Toast.LENGTH_SHORT).show()
         ) {
             @Override
             protected Map<String, String> getParams() {
@@ -170,4 +211,5 @@ finish();
 
         Volley.newRequestQueue(this).add(stringRequest);
     }
-    }
+
+}

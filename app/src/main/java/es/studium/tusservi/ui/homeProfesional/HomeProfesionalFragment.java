@@ -36,6 +36,14 @@ import es.studium.tusservi.R;
 import es.studium.tusservi.databinding.FragmentHomeProfesionalBinding;
 import es.studium.tusservi.empresa.Empresa;
 import es.studium.tusservi.empresa.EmpresaAdapter;
+/**
+ * Fragmento que representa el panel principal del profesional.
+ * Permite visualizar, añadir, editar y eliminar empresas propias.
+ * Utiliza un RecyclerView para mostrar las empresas y realiza peticiones
+ * al servidor mediante la librería Volley.
+ *
+ * Relacionado con: Empresa, EmpresaAdapter, RegistroEmpresaActivity, EditarEmpresaActivity.
+ */
 
 public class HomeProfesionalFragment extends Fragment {
 
